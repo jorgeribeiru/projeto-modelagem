@@ -1,0 +1,7 @@
+# Dependências externas do projeto Python.
+#
+# O núcleo matemático (`contratos`, `problema`, `metodos`, `analise`) utiliza apenas
+# bibliotecas padrão do Python (`math`, `dataclasses`, `typing`).
+#
+# Adicione abaixo as bibliotecas externas necessárias conforme forem utilizadas
+# (por exemplo, `matplotlib` para o módulo `src/visualizacao.py`).
