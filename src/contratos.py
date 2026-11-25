@@ -17,3 +17,28 @@ Estruturas para declarar aqui:
    - `x`: `list[float]` — pontos da malha (x_0, ..., x_n).
    - `y`: `list[float]` — valores calculados (y_0, ..., y_n).
 """
+from dataclasses import dataclass
+from collections.abc import Callable
+
+FuncaoDerivada = Callable[[float, float], float]
+FuncaoExata = Callable[[float], float]
+
+@dataclass
+class ProblemaPVI:
+    """Entrada padronizada de um PVI de 1ª ordem: y' = f(x,y), y(x0) = y0"""
+
+    f: FuncaoDerivada
+    x0: float
+    y0: float
+    x_fim: float
+    h: float
+    solucao_exata: FuncaoExata | None = None
+
+
+@dataclass
+class ResultadoMetodo:
+    """Saída padronizada devolvida pelos métodos numéricos"""
+
+    nome: str
+    x: list[float]
+    y: list[float]
