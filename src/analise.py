@@ -8,6 +8,7 @@ O que implementar aqui:
 - Exibir no terminal ou exportar tabela comparativa (x, Exata, Euler, RK4 e erros)
   para facilitar os comentários do relatório em PDF.
 """
+import math
 from dataclasses import dataclass
 
 from src.contratos import FuncaoExata, ResultadoMetodo
@@ -30,6 +31,19 @@ def calcular_erros_absolutos(
 ) -> list[float]:
     """Calcula |phi(x_n) - y_n| em cada ponto da malha."""
     return [abs(solucao_exata(x) - y) for x, y in zip(resultado.x, resultado.y)]
+
+
+def calcular_erros_relativos(
+    solucao_exata: FuncaoExata,
+    resultado: ResultadoMetodo,
+) -> list[float]:
+    """Calcula |phi(x_n) - y_n| / |phi(x_n)|; `nan` onde phi(x_n) = 0."""
+    erros = calcular_erros_absolutos(solucao_exata, resultado)
+    relativos = []
+    for x, erro in zip(resultado.x, erros):
+        referencia = abs(solucao_exata(x))
+        relativos.append(erro / referencia if referencia != 0.0 else math.nan)
+    return relativos
 
 
 def resumir_erro(

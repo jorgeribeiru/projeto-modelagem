@@ -16,6 +16,11 @@ Estruturas para declarar aqui:
    - `nome`: `str` — nome legível da curva para legendas e tabelas.
    - `x`: `list[float]` — pontos da malha (x_0, ..., x_n).
    - `y`: `list[float]` — valores calculados (y_0, ..., y_n).
+
+3. `CenarioComparacao` (entrada da visualização):
+   - `pvi`, `resultados` e os erros absolutos/relativos de cada método, indexados por `nome`.
+   - `equacao` e `solucao_exata_texto`: textos legíveis exibidos no título e no guia da interface.
+   - Montado pelo `main.py`, para que `visualizacao` e `interface` não importem solvers nem `analise`.
 """
 from dataclasses import dataclass
 from collections.abc import Callable
@@ -42,3 +47,18 @@ class ResultadoMetodo:
     nome: str
     x: list[float]
     y: list[float]
+
+
+@dataclass
+class CenarioComparacao:
+    """Tudo o que a visualização precisa para comparar os métodos com a solução exata"""
+
+    pvi: ProblemaPVI
+    resultados: list[ResultadoMetodo]
+    erros_absolutos: dict[str, list[float]]
+    erros_relativos: dict[str, list[float]]
+    equacao: str = ""
+    solucao_exata_texto: str = ""
+
+
+FuncaoRecalculo = Callable[[float], CenarioComparacao]

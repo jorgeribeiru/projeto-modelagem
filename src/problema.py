@@ -11,10 +11,14 @@ O que implementar aqui:
 - Função `gerar_malha(x0, x_fim, h) -> list[float]` calculando `n = round((x_fim - x0) / h)`
   e gerando pontos por índice (`round(x0 + i * h, 10)`), evitando `while x <= 5.0`.
 - Função que monta e retorna o `ProblemaPVI` pronto da questão.
+- Textos legíveis da EDO e da solução exata, usados nos títulos do gráfico e da interface.
 """
 import math
 
 from src.contratos import ProblemaPVI
+
+EQUACAO_TEXTO = "y′ + 2y = e⁻ˣ,  y(0) = 3"
+SOLUCAO_EXATA_TEXTO = "φ(x) = e⁻ˣ + 2e⁻²ˣ"
 
 
 def f(x: float, y:float) -> float:
