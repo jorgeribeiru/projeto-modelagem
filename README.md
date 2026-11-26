@@ -6,6 +6,20 @@ Repositório do **1º Trabalho de Implementação Computacional** da disciplina 
 - **Material de referência (Apostila EDOs):** [docs/Edo_Sansuke_com_figura_Atualizado.pdf](./docs/Edo_Sansuke_com_figura_Atualizado.pdf)
 - **Prazo de entrega:** 30/11/2026 às 20h (código-fonte em Python + PDF do relatório).
 
+## Como executar
+
+```bash
+python -m venv .venv
+.venv/bin/pip install -r requirements.txt   # matplotlib + customtkinter (requer Tk, já incluso no Python do sistema)
+
+.venv/bin/python main.py                    # resolve, imprime a tabela de erros e salva resultados/comparacao_pvi.png/.pdf
+.venv/bin/python main.py --interativo       # também abre a interface de análise do gráfico
+.venv/bin/python main.py --interativo --sem-guia
+.venv/bin/python -m pytest -q               # testes
+```
+
+**Interface de análise (`--interativo`):** um guia de boas-vindas apresenta o problema, os eixos, os filtros e a inspeção de pontos. Na barra lateral escolhem-se as curvas exibidas, o intervalo de x, as escalas (linear/log), o tipo de erro (absoluto/relativo) e o passo h (que recalcula Euler e RK4). Clicar no gráfico seleciona o nó da malha mais próximo, e as setas ← → navegam entre os nós. O cartão inferior mostra φ(xₙ), o valor de cada método, os erros e a razão entre eles. "Exportar figura" salva a visão atual em PNG, PDF ou SVG.
+
 ---
 
 ## 1. Definição Matemática do Problema
@@ -43,6 +57,8 @@ Para manter o código simples, didático e sem conflitos de ambiente entre os in
    - **Motivo:** Com apenas 51 pontos, a execução em Python puro leva frações de milissegundo, deixa as fórmulas de recorrência 100% explícitas (como na apostila do professor), evita bugs de conversão entre `ndarray` e `list`, e permite desenvolver/testar os métodos sem instalar pacotes externos.
 2. **Visualização (`visualizacao`):**
    - Usaremos **`matplotlib`**, que já aceita `list[float]` diretamente na plotagem sem necessidade de conversão.
+3. **Interface de análise (`interface`):**
+   - **`customtkinter`** com o `matplotlib` embutido (`FigureCanvasTkAgg`). Ela recebe os dados prontos e um callback `recalcular(h)` do `main.py`, então também não importa solvers nem `analise`.
 
 ---
 
@@ -59,12 +75,15 @@ flowchart LR
     rk4["runge_kutta.py (Letra B: Método RK4)"]
     vis["visualizacao.py (Letra C: Gráfico Único)"]
     analise["analise.py (Tabelas e Erros p/ Relatório)"]
+    ui["interface/ (Análise interativa)"]
 
     main --> prob
     main --> euler
     main --> rk4
     main --> vis
     main --> analise
+    main --> ui
+    ui --> vis
     prob -.-> contratos
     euler -.-> contratos
     rk4 -.-> contratos
@@ -84,10 +103,11 @@ projeto-modelagem/
 ├── resultados/                  # Saídas geradas (gráfico comparativo .png/.pdf e tabelas)
 ├── src/
 │   ├── __init__.py
-│   ├── contratos.py             # Estruturas ProblemaPVI e ResultadoMetodo
+│   ├── contratos.py             # Estruturas ProblemaPVI, ResultadoMetodo e CenarioComparacao
 │   ├── problema.py              # Equação f(x,y), solução exata e geração da malha x
 │   ├── analise.py               # Cálculo de erros absolutos e resumo tabular p/ o relatório
 │   ├── visualizacao.py          # Letra (c): gráfico comparativo das 3 curvas no mesmo frame
+│   ├── interface/               # Janela interativa: filtros, inspeção de pontos e guia de onboarding
 │   └── metodos/
 │       ├── __init__.py
 │       ├── euler.py             # Letra (a): implementação exclusiva do Método de Euler
