@@ -6,4 +6,5 @@ Módulos:
 - `problema`: equação da Questão 1, solução exata e geração da malha discreta.
 - `metodos`: implementações isoladas de Euler e Runge-Kutta (RK4).
 - `analise` e `visualizacao`: cálculo de erros e plotagem comparativa.
+- `interface`: janela interativa de análise do gráfico (filtros, inspeção de pontos e guia).
 """

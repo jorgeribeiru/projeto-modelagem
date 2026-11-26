@@ -9,9 +9,12 @@ Fluxo esperado:
 3. Resolver pelo Método de Runge-Kutta (`src.metodos.runge_kutta`) — Letra (b).
 4. Gerar métricas e tabela comparativa de erros em `src.analise`.
 5. Plotar e salvar o gráfico comparativo das 3 curvas em `src.visualizacao` — Letra (c).
+6. Com `--interativo`, abrir a interface de análise (`src.interface`).
 
 Uso:
     python main.py                      # gera resultados/comparacao_pvi.png e .pdf
+    python main.py --interativo         # também abre a interface de análise
+    python main.py --interativo --sem-guia
 """
 import argparse
 import dataclasses
@@ -50,6 +53,8 @@ def montar_cenario(h: float | None = None) -> CenarioComparacao:
 
 def _ler_argumentos(argv: Sequence[str]) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Resolve o PVI por Euler e RK4 e compara com a solução exata.")
+    parser.add_argument("--interativo", action="store_true", help="abre a interface de análise do gráfico")
+    parser.add_argument("--sem-guia", action="store_true", help="não exibe o guia de boas-vindas da interface")
     parser.add_argument("--saida", type=Path, default=PASTA_RESULTADOS, help="pasta onde a figura é salva")
     return parser.parse_args(list(argv))
 
@@ -69,6 +74,11 @@ def main(argv: Sequence[str] = ()) -> None:
 
     arquivos = plotar_comparacao(cenario, args.saida / NOME_FIGURA)
     print("\nGráfico comparativo salvo em:", ", ".join(str(a) for a in arquivos))
+
+    if args.interativo:
+        from src.interface import abrir_interface
+
+        abrir_interface(cenario, recalcular=montar_cenario, mostrar_guia=not args.sem_guia)
 
 
 if __name__ == "__main__":
