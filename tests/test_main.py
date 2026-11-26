@@ -8,14 +8,14 @@ from main import main
 
 
 class TestMain(unittest.TestCase):
-    def test_main_executa_fluxo_euler_sem_erros(self) -> None:
+    def test_main_executa_euler_e_rk4_sem_erros(self) -> None:
         saida = io.StringIO()
         with contextlib.redirect_stdout(saida):
             main()
 
         texto = saida.getvalue()
-        self.assertIn("Método de Euler", texto)
-        self.assertIn("51", texto)
+        self.assertIn("Método de Euler: 51 pontos", texto)
+        self.assertIn("Runge-Kutta (RK4): 51 pontos", texto)
 
 
 if __name__ == "__main__":
