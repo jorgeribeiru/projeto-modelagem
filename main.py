@@ -11,8 +11,8 @@ Fluxo esperado:
 5. Plotar e salvar o gráfico comparativo das 3 curvas em `src.visualizacao` — Letra (c).
 """
 from src.metodos.euler import resolver_euler
+from src.metodos.runge_kutta import resolver_runge_kutta
 from src.problema import criar_pvi_trabalho
-# from src.metodos.runge_kutta import resolver_runge_kutta
 # from src.analise import exibir_analise_erros
 # from src.visualizacao import plotar_comparacao
 
@@ -22,11 +22,11 @@ def main() -> None:
     pvi = criar_pvi_trabalho()
 
     resultado_euler = resolver_euler(pvi)
-    # resultado_rk4 = resolver_runge_kutta(pvi)
+    resultado_rk4 = resolver_runge_kutta(pvi)
 
     resultados = [
         resultado_euler,
-        # resultado_rk4,
+        resultado_rk4,
     ]
 
     for res in resultados:
